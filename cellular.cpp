@@ -1,3 +1,4 @@
+#include <iostream>
 #include "cellular.h"
 RowOfCells::RowOfCells(const int size, int rowposition){
 	arr = new int[size];

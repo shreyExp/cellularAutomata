@@ -1,5 +1,4 @@
 #include <cstddef>
-#include <iostream>
 using namespace std;
 class RowOfCells{
 	public:
