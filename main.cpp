@@ -15,6 +15,7 @@ class RowOfCells{
 	public:
 		RowOfCells(const int, int);
 		void nextStep();
+		int seek(int);
 	private:
 		int* arr = NULL;
 		int* arrCopy = NULL;
@@ -23,7 +24,6 @@ class RowOfCells{
 		int midIndex = 0;
 		void initialStep();
 		void copyArr(int*, int*);
-		int seek(int index);
 };
 RowOfCells::RowOfCells(const int size, int rowposition){
 	arr = new int[size];
@@ -64,11 +64,34 @@ int RowOfCells::seek(int index){
 	}
 }
 int main(int argc, char** argv){
-	const int noOfCellsInRow = 101;
-	const int noOfCellRows = 100;
+	double aspectRatio = 158.0/80.0;
+	//const int noOfCellsInRow = 158;
+	//const int noOfCellRows = 80;
+	const int noOfCellRows = 500;
+	const int noOfCellsInRow = (double)noOfCellRows*aspectRatio;
+	cout<<"rows "<<noOfCellRows<<" Cols: "<<noOfCellsInRow<<endl;
 	const int sizeOfCell = 10; //in each dimension
 	const int pixelCols = noOfCellsInRow * sizeOfCell;
 	const int pixelRows = noOfCellRows * sizeOfCell;
 	int cellSize = 5; //size of the block on the image
 	Mat M(pixelRows, pixelCols, CV_8UC3, Scalar(0,0,0));
+	RowOfCells cellRow(noOfCellsInRow, 0);
+	int cols = M.cols*M.channels();
+	uchar *p;
+	int value = 0;
+	cout<<"M.rows "<<M.rows<<endl;
+	cout<<"M.cols "<<M.cols<<endl;
+	for(int i = 0; i < noOfCellRows; i++){
+		for(int j = 0; j < noOfCellsInRow; j++){
+			value = cellRow.seek(j);
+			Mat subset(M, Rect(j*sizeOfCell, i*sizeOfCell, sizeOfCell, sizeOfCell));
+			if(value)
+				subset = Scalar(255, 255, 255);
+		}
+		cellRow.nextStep();
+	}
+	imshow("Cellular Automata", M);
+	waitKey(1000);
+	imwrite("CellularAutomata.jpg", M);
+	return 0;
 }
