@@ -65,19 +65,16 @@ int RowOfCells::seek(int index){
 }
 int main(int argc, char** argv){
 	double aspectRatio = 158.0/80.0;
-	//const int noOfCellsInRow = 158;
-	//const int noOfCellRows = 80;
-	const int noOfCellRows = 500;
+	const int noOfCellRows = 1500;
 	const int noOfCellsInRow = (double)noOfCellRows*aspectRatio;
 	cout<<"rows "<<noOfCellRows<<" Cols: "<<noOfCellsInRow<<endl;
-	const int sizeOfCell = 10; //in each dimension
+	const int sizeOfCell = 2000/noOfCellRows; //in each dimension
 	const int pixelCols = noOfCellsInRow * sizeOfCell;
 	const int pixelRows = noOfCellRows * sizeOfCell;
 	int cellSize = 5; //size of the block on the image
 	Mat M(pixelRows, pixelCols, CV_8UC3, Scalar(0,0,0));
 	RowOfCells cellRow(noOfCellsInRow, 0);
 	int cols = M.cols*M.channels();
-	uchar *p;
 	int value = 0;
 	cout<<"M.rows "<<M.rows<<endl;
 	cout<<"M.cols "<<M.cols<<endl;
