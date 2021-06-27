@@ -6,63 +6,12 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include "cellular.h"
 
 using namespace std;
 using namespace cv;
 using namespace Json;
 
-class RowOfCells{
-	public:
-		RowOfCells(const int, int);
-		void nextStep();
-		int seek(int);
-	private:
-		int* arr = NULL;
-		int* arrCopy = NULL;
-		int sizeOfRow = 0;
-		int rowPosition = 0;
-		int midIndex = 0;
-		void initialStep();
-		void copyArr(int*, int*);
-};
-RowOfCells::RowOfCells(const int size, int rowposition){
-	arr = new int[size];
-	arrCopy = new int[size];
-	sizeOfRow = size;
-	midIndex = (sizeOfRow + 1)/2;
-	rowPosition = rowposition;
-	initialStep();
-}
-void RowOfCells::initialStep(){
-	arr[midIndex] = 1;
-}
-void RowOfCells::nextStep(){
-	for(int i = 0; i < sizeOfRow; i++){
-		if(i == 0){
-			arrCopy[i] = arr[i+1];
-		}else if(i == (sizeOfRow - 1)){
-			arrCopy[i] = arr[sizeOfRow -2];
-		}else if(arr[i-1] ^ arr[i+1]){ 
-			arrCopy[i] = 1;
-		}else{
-			arrCopy[i] = 0;
-		}
-	}	
-	copyArr(arrCopy, arr);
-}
-void RowOfCells::copyArr(int* arrSource, int* arrDestination){
-	for(int i = 0; i < sizeOfRow; i++){
-		arrDestination[i] = arrSource[i];
-	}
-}
-int RowOfCells::seek(int index){
-	if(index < sizeOfRow && index >= 0)
-		return arr[index];
-	else{
-		cout<<"index out of bounds\n";
-		return 0;
-	}
-}
 int main(int argc, char** argv){
 	double aspectRatio = 158.0/80.0;
 	const int noOfCellRows = 1500;
